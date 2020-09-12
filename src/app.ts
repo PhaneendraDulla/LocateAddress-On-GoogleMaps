@@ -6,7 +6,7 @@ const addressInput = document.getElementById("address")! as HTMLInputElement;
 const GOOGLE_API_KEY = "AIzaSyBPZo_YF34W-6qkRb3DBIEfjMJG_7mp5UI";
 
 type GoogleGeoCodingResponse = {
-  results: { geometry: { location: { lat: number; lng: number } } }[];
+  results: { formatted_address: string, geometry: { location: { lat: number; lng: number } } }[];
   status: "OK" | "ZERO_RESULTS";
 };
 
@@ -31,10 +31,11 @@ function searchAddressHandler(event: Event) {
       });
 
       new google.maps.Marker({ position: coordinates, map: map });
+      document.getElementById("result")!.textContent = response.data.results[0].formatted_address;
     })
     .catch((err) => {
       alert(err.message);
-      console.error(err);
+      console.log(err);
     });
 }
 
